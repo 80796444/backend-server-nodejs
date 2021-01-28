@@ -1,26 +1,27 @@
-//Requires
-var express = require('express');
-var mongoose = require('mongoose');
+// Requires
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
 
 
 //Inicializar variables
+const app = express();
 
-var app = express();
+// SET Cors
+app.use(cors());
+app.use(express.json());
 
-//conexion a base de datos mongo
+// Importar rutas
+// conexion a base de datos mongo
 mongoose.connection.openUri('mongodb://localhost:27017/hospitalDB', (err, res) => {
     if (err) throw err;
     console.log('Base de datos: \x1b[32m%s\x1b[0m','online');
 });
 
-//Rutas
-app.get('/', (req, res, next) => {
+// Rutas
+app.use('/api/usuarios', require('./routes/usuario'));
+app.use('/', require('./routes/app'));
 
-    res.status(200).json({
-        ok: true,
-        mensaje: 'Peticion realizada correctamente 1'
-    });
-});
 
 // Escuchar peticione
 app.listen(3000, () => {
