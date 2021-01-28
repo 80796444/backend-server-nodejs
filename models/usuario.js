@@ -12,5 +12,11 @@ var UsuarioSchema = new Schema({
     google: { type: Boolean, default: false }
 });
 
+/** Metodo para cambiar el nombre de la propiedad _id por uid */
+UsuarioSchema.method('toJSON', function() {
+    const { __v, _id, ...object } = this.toObject();
+    object.uid = _id;
+    return object;
+});
 
 module.exports = mongoose.model('Usuario', UsuarioSchema);
